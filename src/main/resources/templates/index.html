@@ -39,9 +39,20 @@
 <br/>
 
 <h3>Add User</h3>
-<form th:action="@{/add}" method="post">
-  <label>Name: <input type="text" name="name"/></label><br/>
-  <label>Email: <input type="text" name="email"/></label><br/>
+<form th:action="@{/add}" th:object="${user}" method="post">
+  <label>Name:
+    <input type="text" th:field="*{name}" />
+  </label>
+  <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+
+  <br/>
+
+  <label>Email:
+    <input type="text" th:field="*{email}" />
+  </label>
+  <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+
+  <br/>
   <button type="submit">Add</button>
 </form>
 

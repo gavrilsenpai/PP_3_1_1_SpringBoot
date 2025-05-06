@@ -7,6 +7,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 
 @Entity
@@ -17,10 +19,11 @@ public class User extends SecurityProperties.User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @NotBlank(message = "Name must not be empty")
     private String name;
 
-    @Column(name = "email")
+    @NotBlank(message = "Email must not be empty")
+    @Email(message = "Email should be valid")
     private String email;
 
     public User() {
@@ -69,5 +72,18 @@ public class User extends SecurityProperties.User {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id != null && id.equals(user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
